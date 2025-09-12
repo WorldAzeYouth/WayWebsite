@@ -24,7 +24,7 @@ module.exports = {
     const slugs = getBlogSlugs();
 
     return slugs.map(slug => ({
-      loc: `/blogs/${slug}`,       
+      loc: `/blog/${slug}`,       
       lastmod: new Date().toISOString(), 
     }));
   },
