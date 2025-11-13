@@ -125,7 +125,7 @@ const TeamSectionEnhanced = () => {
       id: 4,
       name: 'Sevinc Əhmədova',
       title: tTeam("sevincEhmedova_title"),
-      imageSrc: '/images/avatar/sevincEhmedova.jpg'
+      imageSrc: '/images/avatar/SevincEhmedova.jpg'
     },
     {
       id: 5,
