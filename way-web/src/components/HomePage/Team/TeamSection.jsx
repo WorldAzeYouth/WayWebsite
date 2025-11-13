@@ -1,9 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
 const TeamMember = ({ name, title, imageSrc, isVisible, index, isScrollingUp }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const imageRef = useRef(null);
   const isEven = index % 2 === 0;
+  
+  const handleMouseMove = (e) => {
+    if (!imageRef.current) return;
+    
+    const rect = imageRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    
+    setMousePosition({ x, y });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
   
   return (
     <div 
@@ -26,18 +46,43 @@ const TeamMember = ({ name, title, imageSrc, isVisible, index, isScrollingUp }) 
             : `${index * 50}ms`
       }}
     >
-      <div className="w-full aspect-square bg-gray-100 overflow-hidden relative mb-3 h-[400px] rounded-4xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg">
+      <div 
+        ref={imageRef}
+        className="w-full aspect-square bg-gray-100 overflow-hidden relative mb-3 h-[400px] rounded-4xl transition-all duration-800 group-hover:scale-105 group-hover:shadow-lg"
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={name}
-            fill
-            className="object-cover transition-all duration-300 group-hover:scale-110"
-          />
+          <>
+           
+            <img
+              src={imageSrc}
+              alt={name}
+              className="absolute inset-0 w-full h-full object-cover grayscale-0 transition-all duration-300 group-hover:grayscale-0"
+            />
+            
+           
+            <img
+              src={imageSrc}
+              alt={name}
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{
+                opacity: isHovering ? 1 : 0,
+                transition: 'opacity 0s',
+                maskImage: isHovering 
+                  ? `radial-gradient(circle 350px at ${mousePosition.x}% ${mousePosition.y}%, black 0%, transparent 100%)`
+                  : 'none',
+                WebkitMaskImage: isHovering 
+                  ? `radial-gradient(circle 350px at ${mousePosition.x}% ${mousePosition.y}%, black 0%, transparent 100%)`
+                  : 'none',
+              }}
+            />
+          </>
         ) : (
           <div className="w-full h-full bg-gray-200 transition-all duration-300 group-hover:bg-gray-300" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+       
       </div>
       <h3 className="text-xl font-bold text-center text-gray-900 transition-colors duration-300 group-hover:text-[#15529F]">
         {name}
@@ -62,55 +107,55 @@ const TeamSectionEnhanced = () => {
       id: 1,
       name: 'Ramin Həbibzadə',
       title: tTeam("raminHebibzade_title"),
-      imageSrc: '/images/avatar/RaminHebibzade.jpeg'
+      imageSrc: '/images/avatar/RaminHebibzade.jpg'
     },
     {
       id: 2,
-      name: 'Nəzrin Süleymanova',
-      title: tTeam("nezrinSuleymanova_title"),
-      imageSrc: '/images/avatar/NezrinSüleymanova.jpeg'
+      name: 'Ayxan Hüseynov',
+      title: tTeam("ayxanHuseynov_title"),
+      imageSrc: '/images/avatar/AyxanHüseynov.png'
     },
     {
       id: 3,
-      name: 'Rəsul Quliyev',
-      title: tTeam("resulQuliyev_title"),
-      imageSrc: '/images/avatar/ResulQuliyev.jpg'
+      name: 'Mirhüseyn Tağıyev',
+      title: tTeam("mirhuseynTagiyev_title"),
+      imageSrc: '/images/avatar/MirhuseynTagiyev.jpeg'
     },
     {
       id: 4,
-      name: 'Fətimə Hüseynova',
-      title: tTeam("fatimeHuseynova_title"),
-      imageSrc: '/images/avatar/FatimeHüseynova.jpg'
+      name: 'Sevinc Əhmədova',
+      title: tTeam("sevincEhmedova_title"),
+      imageSrc: '/images/avatar/sevincEhmedova.jpg'
     },
     {
       id: 5,
-      name: 'Şəbnəm İsmixanova',
-      title: tTeam("sebnemIsmixanova_title"),
-      imageSrc: '/images/avatar/Şəbnəmİsmixanova.jpeg'
+      name: 'Nuray Rəsulzadə',
+      title: tTeam("nurayResulzade_title"),
+      imageSrc: '/images/avatar/NurayResulzade.JPG'
     },
     {
       id: 6,
-      name: 'Günay Mövlamova',
-      title: tTeam("gunayMovlamova_title"),
-      imageSrc: '/images/avatar/GünayMövlamova.jpeg'
+      name: 'Rəmələ Həsənova',
+      title: tTeam("remaleHesenova_title"),
+      imageSrc: '/images/avatar/RemaleHesenova.jpeg'
     },
     {
       id: 7,
-      name: 'Ayxan Hüseynov',
-      title: tTeam("ayxanHuseynov_title"),
-      imageSrc: '/images/avatar/AyxanHüseynov.jpeg'
+      name: 'Ceyhun Mahmudov',
+      title: tTeam("ceyhunMahmudov_title"),
+      imageSrc: '/images/avatar/CeyhunMahmudov.jpeg'
     },
     {
       id: 8,
-      name: 'Nuranə Vəliyeva',
-      title: tTeam("nuraneVeliyeva_title"),
-      imageSrc: '/images/avatar/NuranəVəliyeva.jpeg'
+      name: 'Ayxan İsmayılov',
+      title: tTeam("ayxanIsmayilov_title"),
+      imageSrc: '/images/avatar/AyxanIsmayilov.jpg'
     },
     {
       id: 9,
-      name: 'Aysel Kərimli',
-      title: tTeam("ayselKerimli_title"),
-      imageSrc: '/images/avatar/AyselKərimli.jpeg'
+      name: 'Rauf Hüseynzadə',
+      title: tTeam("raufHuseynzade_title"),
+      imageSrc: '/images/avatar/RaufHuseynzade.jpg'
     },
   ];
 
@@ -127,14 +172,12 @@ const TeamSectionEnhanced = () => {
       threshold: 0.3,
       rootMargin: '50px 0px 50px 0px'
     };
-
     
     const titleObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         setTitleVisible(entry.isIntersecting);
       });
     }, observerOptions);
-
   
     const memberObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -147,7 +190,6 @@ const TeamSectionEnhanced = () => {
 
     const titleElement = document.getElementById('team-title');
     if (titleElement) titleObserver.observe(titleElement);
-
   
     teamMembers.forEach(member => {
       const element = document.getElementById(`team-member-${member.id}`);
@@ -214,4 +256,4 @@ const TeamSectionEnhanced = () => {
   );
 };
 
-export default TeamSectionEnhanced;
+export default TeamSectionEnhanced; 

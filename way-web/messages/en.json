@@ -94,26 +94,27 @@
     "phoneLabel": "Phone number",
     "phone": "+994 (012) 597 56 19"
   },
+
  "Team": {
   "teamTitle": "Team",
 
   "raminHebibzade_title": "Chairman",
 
-  "nezrinSuleymanova_title": "General Secretary",
+  "ayxanHuseynov_title": "General Secretary",
 
-  "resulQuliyev_title": "Deputy Chairman",
+  "mirhuseynTagiyev_title": "Deputy Chairman",
 
-  "fatimeHuseynova_title": "Deputy Secretary-General",
+  "sevincEhmedova_title": "Graphic Designer",
 
-  "sebnemIsmixanova_title": "Designer",
+  "nurayResulzade_title": "Project Manager",
 
-  "gunayMovlamova_title": "Social Media Manager",
+  "remaleHesenova_title": "Social Media Manager",
 
-  "ayxanHuseynov_title": "Events Manager",
+  "ayxanIsmayilov_title": "International Relations Manager",
 
-  "nuraneVeliyeva_title": "Events Manager",
+  "ceyhunMahmudov_title": "Videographer",
 
-  "ayselKerimli_title": "Videographer"
+  "raufHuseynzade_title": "Software Developer"
 },
 
 

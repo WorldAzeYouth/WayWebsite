@@ -94,17 +94,27 @@
     "phoneLabel": "Telefon nömrəsi",
     "phone": "+994 (012) 597 56 19"
   },
-  "Team": {
-  "teamTitle": "Komanda",
+ 
+ "Team": {
+  "teamTitle": "Team",
+
   "raminHebibzade_title": "Sədr",
-  "nezrinSuleymanova_title": "Baş Katib",
-  "resulQuliyev_title": "Sədr Müavini",
-  "fatimeHuseynova_title": "Baş Katibin Müavini",
-  "sebnemIsmixanova_title": "Dizayner",
-  "gunayMovlamova_title": "Sosial media meneceri",
-  "ayxanHuseynov_title": "Tədbirlər üzrə menecer",
-  "nuraneVeliyeva_title": "Tədbirlər üzrə menecer",
-  "ayselKerimli_title": "Videoqraf"
+
+  "ayxanHuseynov_title": "Baş Katib",
+
+  "mirhuseynTagiyev_title": "Sədr Müavini",
+
+  "sevincEhmedova_title": "Qrafik Dizayner",
+
+  "nurayResulzade_title": "Lahiyə Meneceri",
+
+  "remaleHesenova_title": "Sosial Media Meneceri",
+
+  "ayxanIsmayilov_title": "Beynəlxalq Əlaqələr Meneceri",
+
+  "ceyhunMahmudov_title": "Videoqraf",
+
+  "raufHuseynzade_title": "Proqram təminatatı tərtibatçısı"
 },
 
   "projects":{
