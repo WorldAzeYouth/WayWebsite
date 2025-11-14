@@ -312,7 +312,7 @@ export default function Home() {
       </AnimatedSection>
 
       {/* About Us Section */}
-      <section className="py-16 hover:bg-gray-50/50 transition-colors duration-700" id="about">
+      <section className="py-16 container max-w-7xl mx-auto hover:bg-gray-50/50 transition-colors duration-700" id="about">
         <div className="container mx-auto px-4">
           <AnimatedSection animationType="fadeInUp">
             <h2 className="text-3xl font-bold text-[#15529F] mb-8 hover:text-[#1a5ba8] transition-colors duration-300 cursor-default hover:drop-shadow-sm">
@@ -347,7 +347,7 @@ export default function Home() {
 
       {/* Mission & Vision Section */}
       <section className="py-16 bg-white" id="vision">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 ">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mx-auto container">
             <AnimatedSection animationType="fadeInLeft" className="flex justify-center">
               {/* Mission Box */}
@@ -407,7 +407,7 @@ export default function Home() {
       </AnimatedSection>
 
       {/* Slider Section */}
-      <section className="container mx-auto" id="projects">
+      <section className="container mx-auto max-w-7xl" id="projects">
       <AnimatedSection animationType="fadeInUp">
         <h2 className="text-4xl font-bold text-[#15529F] mb-10 ml-5 hover:text-[#1a5ba8] transition-all duration-300 cursor-default hover:drop-shadow-sm hover:tracking-wide">
           {tProjects("projects_title")}

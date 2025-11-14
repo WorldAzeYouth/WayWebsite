@@ -18,35 +18,43 @@ const Slider = forwardRef((props, ref) => {
       spacing: 16,
     },
     rubberband: true,
-    range: {
-      min: 0,
-      max: 5
-    },
-
     duration: 3500, 
-    easing: (t) => 1 - Math.pow(1 - t, 3), // Smooth easing
+    easing: (t) => 1 - Math.pow(1 - t, 3),
   });
-
 
   useImperativeHandle(ref, () => ({
     slideToEnd: () => {
-     
-      instanceRef.current?.moveToIdx(5, true); // true = animated
+      instanceRef.current?.moveToIdx(5, true);
     },
     slideToStart: () => {
-  
-      instanceRef.current?.moveToIdx(0, true); // true = animated
+      instanceRef.current?.moveToIdx(0, true);
     }
   }));
 
   return (
-    <div ref={sliderRef} className="keen-slider rounded-[50px]">
-      <div className="keen-slider__slide" id="Card1"><Card1 /></div>
-      <div className="keen-slider__slide" id="Card2"><Card2 /></div>
-      <div className="keen-slider__slide" id="Card3"><Card3 /></div>
-      <div className="keen-slider__slide" id="Card4"><Card4 /></div>
-      <div className="keen-slider__slide" id="Card5"><Card5 /></div>
-      <div className="keen-slider__slide" id="Card6"><Card6 /></div>
+    <div className="relative">
+      <div ref={sliderRef} className="keen-slider rounded-[50px]">
+        <div className="keen-slider__slide" id="Card1"><Card1 /></div>
+        <div className="keen-slider__slide" id="Card2"><Card2 /></div>
+        <div className="keen-slider__slide" id="Card3"><Card3 /></div>
+        <div className="keen-slider__slide" id="Card4"><Card4 /></div>
+        <div className="keen-slider__slide" id="Card5"><Card5 /></div>
+        <div className="keen-slider__slide" id="Card6"><Card6 /></div>
+        {/* Empty spacer slide to ensure last card is fully scrollable */}
+        <div className="keen-slider__slide !min-w-[1px] !w-[1px]"></div>
+      </div>
+      
+      
+      <style jsx>{`
+        
+      
+        /* Ensure the container has right padding */
+        .keen-slider::after {
+          content: '';
+          display: block;
+        
+        }
+      `}</style>
     </div>
   );
 });
