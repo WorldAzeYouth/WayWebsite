@@ -1,17 +1,22 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "use-intl";
-import {  X, ChevronDown } from "lucide-react";
+import { X, ChevronDown } from "lucide-react";
 
 export default function Navbar() {
   const [locale, setLocale] = useState("en");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProjectsDropdownOpen, setIsProjectsDropdownOpen] = useState(false);
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  
+  const projectsRef = useRef(null);
+  const langRef = useRef(null);
+  
   const router = useRouter();
   const t = useTranslations("nav");
   const tDropDown = useTranslations("navdropdown");
@@ -32,6 +37,20 @@ export default function Navbar() {
     }
   }, [router]);
 
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (projectsRef.current && !projectsRef.current.contains(event.target)) {
+        setIsProjectsDropdownOpen(false);
+      }
+      if (langRef.current && !langRef.current.contains(event.target)) {
+        setIsLangDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
@@ -41,7 +60,6 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-     
       if (isMobileMenuOpen && Math.abs(currentScrollY - lastScrollY) > 10) {
         setIsMobileMenuOpen(false);
       }
@@ -86,6 +104,7 @@ export default function Navbar() {
   const changeLocale = (newLocale) => {
     setLocale(newLocale);
     document.cookie = `WAYLANG_LOCALE=${newLocale};`;
+    setIsLangDropdownOpen(false);
     router.refresh();
   };
 
@@ -95,6 +114,10 @@ export default function Navbar() {
 
   const toggleProjectsDropdown = () => {
     setIsProjectsDropdownOpen(!isProjectsDropdownOpen);
+  };
+
+  const toggleLangDropdown = () => {
+    setIsLangDropdownOpen(!isLangDropdownOpen);
   };
 
   const projectsList = [
@@ -131,10 +154,10 @@ export default function Navbar() {
         </div>
        
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex  lg:space-x-4">
+        <nav className="hidden lg:flex lg:space-x-4">
           <a 
             href="#" 
-            className={` relative group transition-all duration-300 font-medium transform hover:scale-105 ${
+            className={`relative group transition-all duration-300 font-medium transform hover:scale-105 ${
               isScrolled ? "text-gray-800" : "text-white"
             }`}
           >
@@ -145,7 +168,7 @@ export default function Navbar() {
 
           <a 
             href="#about" 
-            className={` relative group transition-all duration-300 font-medium transform hover:scale-105 ${
+            className={`relative group transition-all duration-300 font-medium transform hover:scale-105 ${
               isScrolled ? "text-gray-800" : "text-white"
             }`}
           >
@@ -156,7 +179,7 @@ export default function Navbar() {
 
           <a 
             href="#objectives" 
-            className={` relative group transition-all duration-300 font-medium transform hover:scale-105 ${
+            className={`relative group transition-all duration-300 font-medium transform hover:scale-105 ${
               isScrolled ? "text-gray-800" : "text-white"
             }`}
           >
@@ -165,22 +188,40 @@ export default function Navbar() {
             <span className="absolute inset-0 bg-white/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></span>
           </a>
 
-          {/* Projects dropdown for desktop */}
-          <div className="relative group">
-            <a
-              href="#projects"
-              className={` flex items-center space-x-1 relative transition-all duration-300 font-medium transform hover:scale-105 ${
+          {/* Projects dropdown - hover və click ilə */}
+          <div 
+            ref={projectsRef}
+            className="relative"
+            onMouseEnter={() => setIsProjectsDropdownOpen(true)}
+            onMouseLeave={() => setIsProjectsDropdownOpen(false)}
+          >
+            <button
+              onClick={toggleProjectsDropdown}
+              className={`flex items-center space-x-1 relative transition-all duration-300 font-medium transform hover:scale-105 ${
                 isScrolled ? "text-gray-800" : "text-white"
               }`}
             >
               <span className="relative z-10">{t("projects")}</span>
-              <ChevronDown size={16} className="transition-transform duration-300 group-hover:rotate-180" />
-              <span className="absolute bottom-0 left-0 h-0.5 bg-[#1A5BA8] transition-all duration-300 w-0 group-hover:w-full rounded-full"></span>
-              <span className="absolute inset-0 bg-white/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></span>
-            </a>
+              <ChevronDown 
+                size={16} 
+                className={`transition-transform duration-300 ${
+                  isProjectsDropdownOpen ? 'rotate-180' : ''
+                }`} 
+              />
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-[#1A5BA8] transition-all duration-300 rounded-full ${
+                isProjectsDropdownOpen ? 'w-full' : 'w-0'
+              }`}></span>
+              <span className={`absolute inset-0 bg-white/10 rounded-lg transition-transform duration-300 -z-10 ${
+                isProjectsDropdownOpen ? 'scale-100' : 'scale-0'
+              }`}></span>
+            </button>
 
             {/* Dropdown menu */}
-            <div className="absolute left-0 mt-3 w-56 rounded-xl shadow-2xl bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 overflow-hidden">
+            <div className={`absolute left-0 mt-3 w-56 rounded-xl shadow-2xl bg-white ring-1 ring-black ring-opacity-5 transition-all duration-300 transform overflow-hidden ${
+              isProjectsDropdownOpen 
+                ? 'opacity-100 visible translate-y-0' 
+                : 'opacity-0 invisible translate-y-2'
+            }`}>
               <div className="py-2">
                 {projectsList.map((project, index) => (
                   <a
@@ -197,7 +238,7 @@ export default function Navbar() {
 
           <a 
             href="#team" 
-            className={` relative group transition-all duration-300 font-medium transform hover:scale-105 ${
+            className={`relative group transition-all duration-300 font-medium transform hover:scale-105 ${
               isScrolled ? "text-gray-800" : "text-white"
             }`}
           >
@@ -208,7 +249,7 @@ export default function Navbar() {
 
           <a 
             href="#contact" 
-            className={` relative group transition-all duration-300 font-medium transform hover:scale-105 ${
+            className={`relative group transition-all duration-300 font-medium transform hover:scale-105 ${
               isScrolled ? "text-gray-800" : "text-white"
             }`}
           >
@@ -216,21 +257,31 @@ export default function Navbar() {
             <span className="absolute bottom-0 left-0 h-0.5 bg-[#1A5BA8] transition-all duration-300 w-0 group-hover:w-full rounded-full"></span>
             <span className="absolute inset-0 bg-white/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></span>
           </a>
+
           <a
-                        href="/blog"
-                        className={` relative group transition-all duration-300 font-medium transform hover:scale-105 ${
+            href="/blog"
+            className={`relative group transition-all duration-300 font-medium transform hover:scale-105 ${
               isScrolled ? "text-gray-800" : "text-white"
-            }`}>
-                        <span className="relative z-10">{t("blog")}</span>
-                        <span className="absolute bottom-0 left-0 h-0.5 bg-[#15529F] transition-all duration-300 w-0 group-hover:w-full rounded-full"></span>
-                        <span className="absolute inset-0 bg-white/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></span>
-                      </a>
+            }`}
+          >
+            <span className="relative z-10">{t("blog")}</span>
+            <span className="absolute bottom-0 left-0 h-0.5 bg-[#15529F] transition-all duration-300 w-0 group-hover:w-full rounded-full"></span>
+            <span className="absolute inset-0 bg-white/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></span>
+          </a>
         </nav>
 
-        {/* Language Selector */}
+        {/* Language Selector - hover və click ilə */}
         <div className="hidden lg:flex items-center">
-          <div className="relative group">
-            <div className="flex items-center px-3 py-2 cursor-pointer rounded-xl backdrop-blur-sm transition-all duration-300 transform hover:scale-105">
+          <div 
+            ref={langRef}
+            className="relative"
+            onMouseEnter={() => setIsLangDropdownOpen(true)}
+            onMouseLeave={() => setIsLangDropdownOpen(false)}
+          >
+            <button 
+              onClick={toggleLangDropdown}
+              className="flex items-center px-3 py-2 cursor-pointer rounded-xl backdrop-blur-sm transition-all duration-300 transform hover:scale-105"
+            >
               {locale === "az" ? (
                 <>
                   <div className="w-6 h-5 bg-[url('/svg/emojione_flag-for-azerbaijan.svg')] bg-contain bg-no-repeat mr-2"></div>
@@ -256,19 +307,23 @@ export default function Navbar() {
               )}
 
               <ChevronDown 
-                className={`ml-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-180 ${
-                  isScrolled ? "text-gray-800" : "text-white"
-                }`} 
+                className={`ml-2 h-4 w-4 transition-all duration-300 ${
+                  isLangDropdownOpen ? 'rotate-180' : ''
+                } ${isScrolled ? "text-gray-800" : "text-white"}`} 
               />
-            </div>
+            </button>
 
             <div
-              className={`absolute top-full right-0 w-[140px] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 cursor-pointer bg-white shadow-xl border overflow-hidden ${
-                isScrolled ? "bg-opacity-95" : "bg-opacity-30"
-              }`}
-              onClick={() => changeLocale(locale === "az" ? "en" : "az")}
+              className={`absolute top-full right-0 w-[140px] rounded-xl cursor-pointer bg-white shadow-xl border overflow-hidden transition-all duration-300 transform ${
+                isLangDropdownOpen 
+                  ? 'opacity-100 visible translate-y-0' 
+                  : 'opacity-0 invisible translate-y-2'
+              } ${isScrolled ? "bg-opacity-95" : "bg-opacity-30"}`}
             >
-              <div className="flex items-center py-3 px-4 hover:bg-[#1A5BA8] hover:text-white transition-all duration-300">
+              <div 
+                onClick={() => changeLocale(locale === "az" ? "en" : "az")}
+                className="flex items-center py-3 px-4 hover:bg-[#1A5BA8] hover:text-white transition-all duration-300"
+              >
                 {locale === "az" ? (
                   <div className="flex items-center gap-3">
                     <div className="w-5 h-5 bg-[url('/svg/united-kingdom1.svg')] bg-contain bg-no-repeat"></div>
