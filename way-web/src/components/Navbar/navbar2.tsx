@@ -13,6 +13,8 @@ export default function Navbar2() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [isProjectsDropdownOpen, setIsProjectsDropdownOpen] = useState<boolean>(false);
+  const [isDesktopLangOpen, setIsDesktopLangOpen] = useState<boolean>(false);
+  const [isScrolledLangOpen, setIsScrolledLangOpen] = useState<boolean>(false);
   
   
   const lastScrollY = useRef<number>(0);
@@ -36,13 +38,11 @@ export default function Navbar2() {
     }
   }, [router]);
 
-  // Memoize the scroll handler to prevent recreating it on every render
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
     
     setIsScrolled(currentScrollY > 50);
     
-
     if (isMobileMenuOpen) {
       return;
     }
@@ -57,7 +57,6 @@ export default function Navbar2() {
       }
     }
     
-   
     lastScrollY.current = currentScrollY;
   }, [isMobileMenuOpen]); 
 
@@ -131,7 +130,7 @@ export default function Navbar2() {
 
   return (
     <>
-      {/* Original Header - Enhanced with subtle animation */}
+      {/* Original Header */}
       <header className="absolute top-0 left-0 right-0 z-10 bg-transparent w-full py-2 md:py-4  max-w-7xl mx-auto   ">
         <div className="mx-auto flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -146,7 +145,7 @@ export default function Navbar2() {
             </Link>
           </div>
 
-          {/* Mobile Language Selector - Enhanced */}
+          {/* Mobile Language Selector */}
           <div className="flex lg:hidden">
             <div 
               className="flex items-center px-3 py-2 cursor-pointer rounded-lg backdrop-blur-sm bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-105 shadow-sm"
@@ -192,10 +191,13 @@ export default function Navbar2() {
             )}
           </div>
 
-          {/* Desktop Language Selector - Enhanced */}
+          {/* Desktop Language Selector - With onClick */}
           <div className="hidden lg:flex items-center">
             <div className="relative group">
-              <div className="flex items-center px-4 py-2 cursor-pointer rounded-xl backdrop-blur-sm bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-105 shadow-sm">
+              <div 
+                className="flex items-center px-4 py-2 cursor-pointer rounded-xl backdrop-blur-sm bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-105 shadow-sm"
+                onClick={() => setIsDesktopLangOpen(!isDesktopLangOpen)}
+              >
                 {locale === 'az' ? (
                   <>
                     <div className="w-6 h-5 bg-[url('/svg/emojione_flag-for-azerbaijan.svg')] bg-contain bg-no-repeat mr-3"></div>
@@ -208,12 +210,17 @@ export default function Navbar2() {
                   </>
                 )}
                 
-                <ChevronDown className="ml-2 h-4 w-4 text-gray-800 transition-transform duration-300 group-hover:rotate-180" />
+                <ChevronDown className={`ml-2 h-4 w-4 text-gray-800 transition-transform duration-300 ${isDesktopLangOpen ? 'rotate-180' : 'group-hover:rotate-180'}`} />
               </div>
               
               <div
-                className="absolute top-full right-0 w-[140px] bg-gradient-to-br from-blue-50 to-blue-100 backdrop-blur-md rounded-xl shadow-xl border border-blue-200/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 cursor-pointer overflow-hidden"
-                onClick={() => changeLocale(locale === 'az' ? 'en' : 'az')}
+                className={`absolute top-full right-0 w-[140px] bg-gradient-to-br from-blue-50 to-blue-100 backdrop-blur-md rounded-xl shadow-xl border border-blue-200/50 cursor-pointer overflow-hidden transition-all duration-300 transform ${
+                  isDesktopLangOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'
+                }`}
+                onClick={() => {
+                  changeLocale(locale === 'az' ? 'en' : 'az');
+                  setIsDesktopLangOpen(false);
+                }}
               >
                 <div className="flex items-center py-3 px-4 text-gray-800 hover:bg-gradient-to-r  hover:text-black transition-all duration-300">
                   {locale === 'az' ? (
@@ -234,7 +241,7 @@ export default function Navbar2() {
         </div>
       </header>
 
-      {/* Desktop Navigation - Enhanced with gradient and animations */}
+      {/* Scrolled Navigation */}
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out bg-white backdrop-blur-lg shadow-xl border-b border-blue-300/30 ${
           (isVisible && isScrolled) || isMobileMenuOpen 
@@ -244,7 +251,6 @@ export default function Navbar2() {
       >
         <div className="absolute inset-0  backdrop-blur-sm"></div>
         <div className="relative container mx-auto px-4 flex justify-between items-center h-[80px]">
-          {/* Logo - Enhanced */}
           <div className="flex items-center">
             <Link href="/" className="transform transition-all duration-300 hover:scale-110">
               <Image
@@ -257,7 +263,7 @@ export default function Navbar2() {
             </Link>
           </div>
 
-          {/* Desktop Navigation - Enhanced */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex space-x-3 ">
             <Link
               href="/" 
@@ -286,26 +292,28 @@ export default function Navbar2() {
               <span className="absolute inset-0 bg-white/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></span>
             </button>
 
-            {/* Projects dropdown - Enhanced */}
+            {/* Projects dropdown - With onClick */}
             <div className="relative group ">
               <button
-                onClick={() => handleScrollNavigation('projects')}
+                onClick={() => setIsProjectsDropdownOpen(!isProjectsDropdownOpen)}
                 className="text-black hover:text-[#15529F] flex items-center space-x-1 relative transition-all duration-300 font-medium transform hover:scale-105"
               >
                 <span className="relative z-10">{t("projects")}</span>
-                <ChevronDown size={16} className="transition-transform duration-300 group-hover:rotate-180" />
+                <ChevronDown size={16} className={`transition-transform duration-300 ${isProjectsDropdownOpen ? 'rotate-180' : 'group-hover:rotate-180'}`} />
                 <span className="absolute bottom-0 left-0 h-0.5 bg-[#15529F] transition-all duration-300 w-0 group-hover:w-full rounded-full"></span>
                 <span className="absolute inset-0 bg-white/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></span>
               </button>
 
-              {/* Dropdown menu - Enhanced */}
-              <div className="absolute left-0 mt-3 w-64 rounded-xl shadow-2xl bg-gradient-to-br from-white to-blue-50 border border-blue-200/50 backdrop-blur-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 overflow-hidden">
+              <div className={`absolute left-0 mt-3 w-64 rounded-xl shadow-2xl bg-gradient-to-br from-white to-blue-50 border border-blue-200/50 backdrop-blur-lg overflow-hidden transition-all duration-300 transform ${
+                isProjectsDropdownOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'
+              }`}>
                 <div className="py-2">
                   {projectsList.map((project, index) => (
                     <Link
                       key={index}
                       href={project.href}
                       className="block px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-600 hover:text-white transition-all duration-300 transform hover:translate-x-1"
+                      onClick={() => setIsProjectsDropdownOpen(false)}
                     >
                       <span className="font-medium">{project.name}</span>
                     </Link>
@@ -342,10 +350,13 @@ export default function Navbar2() {
             </Link>
           </nav>
 
-          {/* Language Selector for Desktop Nav - Enhanced */}
+          {/* Language Selector for Scrolled Nav - With onClick */}
           <div className="hidden lg:flex items-center">
             <div className="relative group">
-              <div className="flex items-center px-4 py-2 cursor-pointer rounded-xl bg-blue-100 hover:bg-white/30 backdrop-blur-sm transition-all duration-300 transform hover:scale-105">
+              <div 
+                className="flex items-center px-4 py-2 cursor-pointer rounded-xl bg-blue-100 hover:bg-white/30 backdrop-blur-sm transition-all duration-300 transform hover:scale-105"
+                onClick={() => setIsScrolledLangOpen(!isScrolledLangOpen)}
+              >
                 {locale === "az" ? (
                   <>
                     <div className="w-6 h-5 bg-[url('/svg/emojione_flag-for-azerbaijan.svg')] bg-contain bg-no-repeat mr-3"></div>
@@ -358,23 +369,28 @@ export default function Navbar2() {
                   </>
                 )}
 
-                <ChevronRight className="ml-2 h-4 w-4 text-black transition-transform duration-300 group-hover:rotate-90" />
+                <ChevronRight className={`ml-2 h-4 w-4 text-black transition-transform duration-300 ${isScrolledLangOpen ? 'rotate-90' : 'group-hover:rotate-90'}`} />
               </div>
 
               <div
-                className="absolute top-full right-0 w-[140px] rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 cursor-pointer bg-gradient-to-br from-white to-blue-50 backdrop-blur-lg shadow-xl border border-blue-200/50 overflow-hidden"
-                onClick={() => changeLocale(locale === "az" ? "en" : "az")}
+                className={`absolute top-full right-0 w-[140px] rounded-xl cursor-pointer bg-gradient-to-br from-white to-blue-50 backdrop-blur-lg shadow-xl border border-blue-200/50 overflow-hidden transition-all duration-300 transform ${
+                  isScrolledLangOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'
+                }`}
+                onClick={() => {
+                  changeLocale(locale === "az" ? "en" : "az");
+                  setIsScrolledLangOpen(false);
+                }}
               >
                 <div className="flex items-center py-3 px-4 hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-600 hover:text-white transition-all duration-300">
                   {locale === "az" ? (
                     <div className="flex items-center gap-3">
                       <div className="w-5 h-5 bg-[url('/svg/united-kingdom1.svg')] bg-contain bg-no-repeat"></div>
-                      <span className="text-sm font-medium text-gray-800 group-hover:text-black">English</span>
+                      <span className="text-sm font-medium text-gray-800">English</span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-3">
                       <div className="w-5 h-5 bg-[url('/svg/emojione_flag-for-azerbaijan.svg')] bg-contain bg-no-repeat"></div>
-                      <span className="text-sm font-medium text-gray-800 group-hover:text-black">Azərbaycan</span>
+                      <span className="text-sm font-medium text-gray-800">Azərbaycan</span>
                     </div>
                   )}
                 </div>
@@ -382,7 +398,7 @@ export default function Navbar2() {
             </div>
           </div>
 
-          {/* Mobile menu button - Enhanced */}
+          {/* Mobile menu button */}
           <button
             className="lg:hidden focus:outline-none  mt-6 transition-all duration-300 text-[#15529F] transform hover:scale-110 p-2 rounded-lg hover:bg-white/20"
             onClick={toggleMobileMenu}
@@ -394,7 +410,7 @@ export default function Navbar2() {
             </div>
           </button>
         </div>
-
+ 
         {/* Mobile Sidebar Navigation */}
         <div
           className={`fixed inset-0 h-screen w-screen z-[60]  bg-opacity-50 transition-all duration-300 ease-in-out ${
@@ -448,7 +464,7 @@ export default function Navbar2() {
                 {t("activities")}
               </button>
 
-              {/* Projects dropdown for mobile - Updated design */}
+              {/* Projects dropdown for mobile */}
               <div className="border-b">
                 <button
                   onClick={toggleProjectsDropdown}

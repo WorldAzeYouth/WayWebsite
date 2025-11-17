@@ -159,9 +159,11 @@ export default function Home() {
   const sliderRef = useRef(null); 
 
   
-  const handleSwipeRight = () => {
-    sliderRef.current?.slideToEnd();
-  };
+ const handleSwipeRight = () => {
+  console.log("handleSwipeRight çağrıldı");
+  console.log("sliderRef.current:", sliderRef.current);
+  sliderRef.current?.slideToEnd();
+};
   useEffect(() => {
     const scrollTo = searchParams.get("scrollTo");
     if (!scrollTo) return;

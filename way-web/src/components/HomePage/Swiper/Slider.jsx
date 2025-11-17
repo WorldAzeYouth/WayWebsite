@@ -22,14 +22,24 @@ const Slider = forwardRef((props, ref) => {
     easing: (t) => 1 - Math.pow(1 - t, 3),
   });
 
-  useImperativeHandle(ref, () => ({
-    slideToEnd: () => {
-      instanceRef.current?.moveToIdx(5, true);
-    },
-    slideToStart: () => {
-      instanceRef.current?.moveToIdx(0, true);
-    }
-  }));
+ // Slider.jsx
+useImperativeHandle(ref, () => ({
+  slideToEnd: () => {
+    const s = instanceRef.current;
+    if (!s) return;
+
+    // wait until the slider has finished measuring
+    requestAnimationFrame(() => {
+      const { slides, maxIdx } = s.track.details;
+      const lastAllowedIdx = maxIdx;          // farthest the slider can go
+      s.moveToIdx(lastAllowedIdx, true, { duration: 800 }); // animated
+    });
+  },
+
+  slideToStart: () => {
+    instanceRef.current?.moveToIdx(0, true, { duration: 800 });
+  }
+}));
 
   return (
     <div className="relative">
