@@ -27,7 +27,7 @@ const TeamMember = ({ name, title, imageSrc, isVisible, index, isScrollingUp }) 
   
   return (
     <div 
-      className={`flex flex-col items-center group cursor-pointer transition-all duration-700 ease-out ${
+      className={`flex flex-col items-center group transition-all duration-700 ease-out ${
         isVisible 
           ? 'opacity-100 translate-x-0' 
           : isScrollingUp 

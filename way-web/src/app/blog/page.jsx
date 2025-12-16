@@ -10,9 +10,9 @@ import Navbar2 from "@/components/Navbar/navbar2";
 const createSlug = (title) => {
   return title
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '') 
-    .replace(/\s+/g, '-') 
-    .replace(/--+/g, '-') 
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/--+/g, '-')
     .trim();
 };
 
@@ -28,12 +28,12 @@ const useIntersectionObserver = (options = {}) => {
 
   const observe = useCallback((element) => {
     if (observer.current) observer.current.disconnect();
-    
+
     observer.current = new IntersectionObserver(updateEntry, {
       threshold,
       rootMargin,
     });
-    
+
     if (element) observer.current.observe(element);
   }, [updateEntry, threshold, rootMargin]);
 
@@ -66,32 +66,28 @@ const AnimatedSection = ({ children, className = "", animationType = "fadeInUp",
 
   const animationClass = useMemo(() => {
     const baseClasses = "transition-all duration-1000 ease-out";
-    
+
     switch (animationType) {
       case "fadeInUp":
-        return `${baseClasses} ${
-          isVisible 
-            ? "opacity-100 translate-y-0" 
-            : "opacity-0 translate-y-10"
-        }`;
+        return `${baseClasses} ${isVisible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-10"
+          }`;
       case "fadeInLeft":
-        return `${baseClasses} ${
-          isVisible 
-            ? "opacity-100 translate-x-0" 
-            : "opacity-0 -translate-x-10"
-        }`;
+        return `${baseClasses} ${isVisible
+          ? "opacity-100 translate-x-0"
+          : "opacity-0 -translate-x-10"
+          }`;
       case "fadeInRight":
-        return `${baseClasses} ${
-          isVisible 
-            ? "opacity-100 translate-x-0" 
-            : "opacity-0 translate-x-10"
-        }`;
+        return `${baseClasses} ${isVisible
+          ? "opacity-100 translate-x-0"
+          : "opacity-0 translate-x-10"
+          }`;
       case "scaleIn":
-        return `${baseClasses} ${
-          isVisible 
-            ? "opacity-100 scale-100" 
-            : "opacity-0 scale-95"
-        }`;
+        return `${baseClasses} ${isVisible
+          ? "opacity-100 scale-100"
+          : "opacity-0 scale-95"
+          }`;
       default:
         return baseClasses;
     }
@@ -122,7 +118,7 @@ const BlogCard = ({ post, index, tBlog, locale }) => {
     router.push(`/blog/${post.slug}`);
   }, [router, post.slug]);
 
-  
+
   useEffect(() => {
     const getTimeAgo = (publishedAt) => {
       const now = new Date();
@@ -143,7 +139,7 @@ const BlogCard = ({ post, index, tBlog, locale }) => {
       setTimeAgo(getTimeAgo(post.datePublished));
       const interval = setInterval(() => {
         setTimeAgo(getTimeAgo(post.datePublished));
-      }, 60000); 
+      }, 60000);
 
       return () => clearInterval(interval);
     }
@@ -171,17 +167,17 @@ const BlogCard = ({ post, index, tBlog, locale }) => {
   }, [post.author]);
 
   return (
-    <AnimatedSection 
-      animationType="scaleIn" 
+    <AnimatedSection
+      animationType="scaleIn"
       delay={index * 100}
       className="group"
     >
-      <div 
+      <div
         onClick={handleCardClick}
         className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 overflow-hidden border border-gray-100 relative cursor-pointer"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-        
+
         <div className="relative h-48 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10"></div>
           <Image
@@ -214,11 +210,11 @@ const BlogCard = ({ post, index, tBlog, locale }) => {
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
               </svg>
-             <span>{post.date}</span>
+              <span>{post.date}</span>
             </span>
           </div>
 
-          <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#15529F] transition-colors duration-300 line-clamp-2">
+          <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#15529F] transition-colors duration-300 line-clamp-1">
             {post.title}
           </h3>
 
@@ -258,7 +254,7 @@ export default function BlogPage() {
   const tBlog = useTranslations("Blogs");
   const tCommon = useTranslations("common");
   const locale = useLocale();
-  
+
   const [selectedCategory, setSelectedCategory] = useState(tCommon("all"));
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -276,7 +272,7 @@ export default function BlogPage() {
         date: "2025-01-27",
         category: tBlog("blog1_category"),
         image: "/images/collective/westernaze3.jpg",
-        
+
         datePublished: "2025-01-27T14:30:00Z",
         excerpt: tBlog("blog1_excerpt"),
       },
@@ -288,19 +284,19 @@ export default function BlogPage() {
         date: "2025-01-27",
         category: tBlog("blog2_category"),
         image: "/images/collective/westernaze2.jpg",
-        
+
         datePublished: "2025-01-27T14:30:00Z",
         excerpt: tBlog("blog2_excerpt"),
       },
       {
         id: 3,
         title: tBlog("blog3_title"),
-         slug: "the-historical-mission-of-the-young-ambassadors",
+        slug: "the-historical-mission-of-the-young-ambassadors",
         author: "Sahibə Putiyeva",
         date: "2025-01-27",
         category: tBlog("blog3_category"),
         image: "/images/collective/westernaze1.jpg",
-      
+
         datePublished: "2025-01-27T14:30:00Z",
         excerpt: tBlog("blog3_excerpt"),
       },
@@ -312,20 +308,20 @@ export default function BlogPage() {
         date: "2025-01-27",
         category: tBlog("blog4_category"),
         image: "/images/collective/westernaze5.jpg",
-      
+
         datePublished: "2025-01-27T14:30:00Z",
         excerpt: tBlog("blog4_excerpt"),
       },
       {
         id: 5,
         title: tBlog("blog5_title"),
-         slug: "the-fundamental-structure-of-azerbaijani-statehood",
+        slug: "the-fundamental-structure-of-azerbaijani-statehood",
         author: "Fərid Şükürlü",
         date: "2025-01-27",
-         datePublished: "2025-01-27T14:30:00Z",
+        datePublished: "2025-01-27T14:30:00Z",
         category: tBlog("blog5_category"),
         image: "/images/collective/westernaze4.jpg",
-      
+
         excerpt: tBlog("blog5_excerpt"),
       }
     ];
@@ -356,7 +352,7 @@ export default function BlogPage() {
 
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(post => 
+      filtered = filtered.filter(post =>
         post.title.toLowerCase().includes(searchLower) ||
         post.excerpt.toLowerCase().includes(searchLower) ||
         post.author.toLowerCase().includes(searchLower)
@@ -377,16 +373,16 @@ export default function BlogPage() {
   return (
     <>
       <div>
-        <Navbar2/>
+        <Navbar2 />
       </div>
-      <div className="min-h-screen bg-gray-50">
-        <section className="relative py-24 bg-gradient-to-br from-[#15529F] via-[#1a5ba8] to-[#1f65b1] overflow-hidden">
+      <div className="min-h-screen bg-gray-50 mx-auto">
+        <section className="relative py-24 bg-gradient-to-br from-[#15529F] via-[#1a5ba8] to-[#1f65b1] overflow-hidden ">
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="absolute inset-0">
             <div className="absolute top-10 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
             <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-300/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
           </div>
-          
+
           <div className="container mx-auto px-4 relative z-10">
             <AnimatedSection animationType="fadeInUp" className="text-center">
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 hover:scale-105 transition-transform duration-300 cursor-default">
@@ -399,8 +395,8 @@ export default function BlogPage() {
           </div>
         </section>
 
-        <section className="py-12 bg-white shadow-sm">
-          <div className="container mx-auto px-4">
+        <section className="py-12 bg-white shadow-sm mx-auto">
+          <div className="container mx-auto px-4 max-w-7xl">
             <AnimatedSection animationType="fadeInUp">
               <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
                 <div className="relative flex-1 max-w-md">
@@ -421,11 +417,10 @@ export default function BlogPage() {
                     <button
                       key={category}
                       onClick={() => handleCategoryChange(category)}
-                      className={`px-4 py-2 rounded-full transition-all duration-300 font-medium hover:scale-105 ${
-                        selectedCategory === category
-                          ? "bg-[#15529F] text-white shadow-lg"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
+                      className={`px-4 py-2 rounded-full transition-all duration-300 font-medium hover:scale-105 ${selectedCategory === category
+                        ? "bg-[#15529F] text-white shadow-lg"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
                     >
                       {category}
                     </button>
@@ -437,7 +432,7 @@ export default function BlogPage() {
         </section>
 
         <section className="py-16">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 max-w-7xl">
             {filteredPosts.length === 0 ? (
               <AnimatedSection animationType="fadeInUp" className="text-center py-16">
                 <div className="text-gray-500">

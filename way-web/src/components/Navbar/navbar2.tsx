@@ -243,14 +243,14 @@ export default function Navbar2() {
 
       {/* Scrolled Navigation */}
       <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out bg-white backdrop-blur-lg shadow-xl border-b border-blue-300/30 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out bg-white backdrop-blur-lg shadow-xl border-b  border-blue-300/30 ${
           (isVisible && isScrolled) || isMobileMenuOpen 
             ? "transform translate-y-0 opacity-100" 
             : "transform -translate-y-full opacity-0"
         }`}
       >
-        <div className="absolute inset-0  backdrop-blur-sm"></div>
-        <div className="relative container mx-auto px-4 flex justify-between items-center h-[80px]">
+        <div className="absolute inset-0  backdrop-blur-sm "></div>
+        <div className="relative container mx-auto px-4 flex justify-between items-center h-[80px] max-w-7xl">
           <div className="flex items-center">
             <Link href="/" className="transform transition-all duration-300 hover:scale-110">
               <Image

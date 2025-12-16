@@ -350,13 +350,15 @@ export default function BlogDetailPage() {
       <div className="relative z-40">
         <Navbar2 />
       </div>
-      <div className="mt-30 relative overflow-hidden">
+      <div className="mt-30 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <Breadcrumb
+            className="mt-30 "
+            title={post.title}
+            blogLink={`/${locale}/blog`}
+          />
+        </div>
         <ProgressBar progress={readingProgress} />
-        <Breadcrumb
-          className="mt-30"
-          title={post.title}
-          blogLink={`/${locale}/blog`}
-        />
 
         {/* Hero Section */}
         <section className="relative py-20 overflow-hidden">

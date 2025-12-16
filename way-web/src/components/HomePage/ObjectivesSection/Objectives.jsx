@@ -130,7 +130,7 @@ const FeatureCard = ({ icon, text, animationType, delay, isMobile }) => {
       delay={delay} 
       isMobile={isMobile}
     >
-      <div className="border-[3px] border-[#437EAF] rounded-3xl py-3 px-3 flex flex-col items-center text-center min-h-[7rem] group relative overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 sm:hover:-translate-y-3 hover:shadow-lg sm:hover:shadow-xl hover:shadow-blue-200/30 will-change-transform">
+      <div className="border-[3px] border-[#437EAF] rounded-3xl py-3 px-3 flex flex-col items-center text-center min-h-[7rem] group relative overflow-hidden transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 sm:hover:-translate-y-3 hover:shadow-lg sm:hover:shadow-xl hover:shadow-blue-200/30 will-change-transform">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 via-blue-50/50 to-blue-100/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         <div className="rounded-full mb-1 transform transition-transform duration-500 group-hover:scale-110 relative z-10">
           <Image 
